@@ -1,0 +1,20 @@
+[package]
+name = "boiler_plate"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+rocket = "=0.5.0-rc.3"
+serde = "1.0.188"
+serde_json = "1.0.106"
+
+
+
+[scripts]
+run_watch = "cargo watch -x 'run'"
+
+
+[default]
+address = "127.0.0.1"
+port = 1000
