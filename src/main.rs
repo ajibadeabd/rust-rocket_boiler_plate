@@ -5,11 +5,11 @@ mod app;
 mod modules;
 
 use std::env;
-use std::sync::atomic::AtomicUsize;
-
 use app::{test_route::{test,test_auth,test_token}};
-use modules::request_logger::RequestLogger;
+use modules::request_logger::{logger};
 use dotenv::dotenv;
+use crate::modules::cors::make_cors;
+use crate::modules::error_handler::{internal_error,bad_input,not_found,not_authorize};
 
 #[launch]
 fn rocket() -> _ {
@@ -22,14 +22,13 @@ fn rocket() -> _ {
     rocket::custom(figment).mount("/", routes![
         test,
         test_auth,
-        test_token
+        test_token,
         ])
-        .attach(RequestLogger {
-        get: AtomicUsize::new(0),
-        post: AtomicUsize::new(0),
-        delete: AtomicUsize::new(0),
-        put: AtomicUsize::new(0),
-        patch: AtomicUsize::new(0),
-    } )
-    
+    .register("/", catchers![
+        not_authorize,
+        internal_error, 
+        not_found, 
+        bad_input
+        ])
+        .attach(logger() ).attach(make_cors())
 }

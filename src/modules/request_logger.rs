@@ -57,3 +57,15 @@ impl Fairing for RequestLogger {
         // Do nothing on response.
     }
 }
+
+
+
+pub fn logger()->RequestLogger{
+    RequestLogger {
+        get: AtomicUsize::new(0),
+        post: AtomicUsize::new(0),
+        delete: AtomicUsize::new(0),
+        put: AtomicUsize::new(0),
+        patch: AtomicUsize::new(0),
+    } 
+}

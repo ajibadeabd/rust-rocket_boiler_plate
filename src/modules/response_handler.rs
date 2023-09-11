@@ -39,6 +39,8 @@ pub enum CustomError {
 
     //#[resp("{0}")]
     BadInput(String),
+    //#[resp("{0}")]
+    Unauthorized(String),
 }
 
 impl CustomError {
@@ -47,12 +49,14 @@ impl CustomError {
             CustomError::Internal(_) => Status::InternalServerError,
             CustomError::NotFound(_) => Status::NotFound,
             CustomError::BadInput(_) => Status::UnprocessableEntity,
+            CustomError::Unauthorized(_) => Status::Unauthorized,
             _ => Status::BadRequest,
         }
     }
     fn get_http_error(&self) -> String {
         match self {
             CustomError::Internal(err) =>err.to_owned(),
+            CustomError::Unauthorized(err) =>err.to_owned(),
             CustomError::NotFound(err) => err.to_owned(),
             CustomError::BadRequest(err) => err.to_owned(),
             CustomError:: BadInput(err) => err.to_owned(),

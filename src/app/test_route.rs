@@ -1,6 +1,6 @@
 use chrono::{Duration, Utc};
 
-use crate::modules::{response_handler::{CustomResult, CustomError, generic_response}, util::{encode_jwt, encode_token_and_refresh}};
+use crate::modules::{response_handler::{CustomResult, CustomError, generic_response}, util::{encode_token_and_refresh}, middle_ware::HeaderAuth};
 
 
 #[get("/")]
@@ -17,9 +17,10 @@ pub async fn test(
 
 #[get("/auth")]
 pub async fn test_auth(
+    header_auth: HeaderAuth, 
 )  -> Result<CustomResult, CustomError>{
     let  response = generic_response::<Option<String>>(
-        "non auth route tested  successfully.",
+        "auth route tested  successfully.",
        None,
        None
    );
